@@ -4,7 +4,7 @@ let htmlBlock = `<div class="_1xnd"><div><div><div id="PageComposerPagelet_"><di
 let arr = htmlBlock.split('<div data-testid="post_message" ');
 // removing all code above the first story
 arr.shift();
-// removing the first 'story' as it is hony's pinned Patreon message
+// removing the first 'story' since it is hony's pinned Patreon message
 arr.shift();
 let stories = [];
 arr.forEach((str, idx) => {
@@ -18,7 +18,7 @@ arr.forEach((str, idx) => {
     microfashion: false 
   };
   // long stories, have the following class
-  if (str.includes('class="text_exposed_root">')) {
+  if (str.includes('class="text_exposed_root"><p>')) {
     story.length = 'long';
     str = str.split('class="text_exposed_root"><p>')[1];
     str = str.split('<span class="text_exposed_hide">...</span><span class="text_exposed_show">').join('');
@@ -36,14 +36,14 @@ arr.forEach((str, idx) => {
     story.length = 'short';
     str = str.split(' id="')[1].split('"><p>')[1];
     str = str.split('</p></div>')[0];
-    if ( str[str.length - 1] === ')' ) {
+    if (str[str.length - 1] === ')') {
       // city data is available
       story.location = str.split('</p><p>')[1].trim().slice(1, -1);
       str = str.split('</p><p>')[0];
     }
   }
-  if ( str[0] === '(' ) story.sequence = true;
-  if ( str[0] === 'T' ) story.microfashion = true;
+  if (str[0] === '(') story.sequence = true;
+  if (str[0] === 'T') story.microfashion = true;
   story.content = str.trim();
   stories.push(story);
 });
