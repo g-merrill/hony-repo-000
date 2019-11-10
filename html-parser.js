@@ -50,8 +50,9 @@ arr.forEach((str, idx) => {
 
 arr = htmlBlock.split('<img class="scaledImageFitWidth img" src="');
 arr.shift();
-let story_urls = [];
 arr.forEach((str, idx) => {
   stories[idx].url = str.split('" data-src="https://scontent-')[0].split('&amp;').join('&');
   idx > 50 && idx < 60 && console.log(stories[idx]);
 });
+// console.log(stories.length); // 94
+console.log(stories[0]);
