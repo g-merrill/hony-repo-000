@@ -19,9 +19,11 @@ arr.forEach((str, idx) => {
     microfashion: false 
   };
   story.timestamp = str.split('" data-utime="')[0];
-  story.url = str.split('<img class="scaledImageFitWidth img" src="')[1]
-    .split('" data-src="https://scontent-')[0]
-    .split('&amp;').join('&');
+  if (str.includes('<img class="scaledImageFitWidth img" src="')) {
+    story.url = str.split('<img class="scaledImageFitWidth img" src="')[1]
+      .split('" data-src="https://scontent-')[0]
+      .split('&amp;').join('&');
+  }
   // each story has this post_message identifier
   str = str.split('<div data-testid="post_message" ')[1];
   // long stories, have the following class
@@ -33,11 +35,8 @@ arr.forEach((str, idx) => {
       // city data is available
       str = str.split(')</p></div><span class="text_exposed_hide">')[0];
       story.location = str.split('</span></p><div class="text_exposed_show"><p> (')[1];
-      str = str.split('</span></p><div class="text_exposed_show"><p> (')[0];
-    } else {
-      // city data is not available
-      str = str.split('</span></p><span class="text_exposed_hide"> ')[0];
     }
+    str = str.split('</span></p>')[0];
   } else {
     // this is not a long story (~ < 800 chars)
     story.length = 'short';
@@ -50,9 +49,9 @@ arr.forEach((str, idx) => {
     }
   }
   if (str[0] === '(') story.sequence = true;
-  if (str[0] === 'T') story.microfashion = true;
+  if (str.includes('microfashion')) story.microfashion = true;
   story.content = str.trim();
-  stories.push(story);
+  story.content && story.url && stories.push(story);
   idx < 84 && idx > 74 && console.log(story);
 });
 // console.log(stories.length); // 94
